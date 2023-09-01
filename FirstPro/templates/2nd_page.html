@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static '2nd_page.css' %}"/>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Management</title>
+</head>
+<body>
+    <div class="header">
+        <img src="https://www.bsesdelhi.com/image/layout_set_logo?img_id=91257&t=1690795118097">
+        <div class="header-content">
+            <input type="text" id="usernameInput" name="empnameone" value="{{ username }}">
+            <a class="btn btn-danger" id="button2" href="{% url 'test_3_page' %}">Register New Complaint</a>
+        </div>
+    </div>
+
+    <div class="frame">
+        <table id="dataTable" class="table">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Employee ID</th>
+                    <th>Circle ID</th>
+                    <th>Division ID</th>
+                    <th>Ward No</th>
+                    <th>Meeting Host</th>
+                    <th>Issue Type</th>
+                    <th>BRPL View</th>
+                    <th>Target Date</th>
+                    <th>Subdivision</th>
+                    <th>Issues Raised By</th>
+                    <th>Counselor</th>
+                    <th>Meeting Date</th>
+                    <th>Meeting Attendee</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                    <th>Attachment</th>
+                </tr>
+            </thead>
+            <tbody id="dataBody">
+                <!-- Data rows will be added dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add this modal element at the end of your HTML body -->
+    <div class="modal" id="fileModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">File Viewer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="fileViewer" width="100%" height="500px"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2023 Complaint Management System. All rights reserved.</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dataBody = document.getElementById('dataBody');
+            const username = '{{ username|escapejs }}'; // Escape the username for JavaScript usage
+
+            // Fetch data from the server using the username as a query parameter
+            fetch(`/get_data/?emp_id=${username}`)
+                .then(response => response.json())
+                .then(dataList => {
+                    dataList.forEach(data => {
+                        const row = document.createElement('tr');
+                        Object.keys(data).forEach(key => {
+                            const cell = document.createElement('td');
+                            if (key === 'attachment') {
+                                // Create a link with the eye icon that opens the modal
+                                const eyeIcon = document.createElement('i');
+                                eyeIcon.className = 'fas fa-eye cursor-pointer'; // Assuming you have FontAwesome
+                                eyeIcon.addEventListener('click', () => openFileModal(data[key]));
+                                cell.appendChild(eyeIcon);
+                            } else {
+                                cell.textContent = data[key];
+                            }
+                            row.appendChild(cell);
+                        });
+                        dataBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+
+            // Setup click event listener for "Register New Complaint" button
+            const registerButton = document.getElementById('button2');
+            registerButton.addEventListener('click', handleRegisterButtonClick);
+        });
+
+        // Function to open the modal and display the file
+        function openFileModal(filePath) {
+            const fileViewer = document.getElementById('fileViewer');
+            const fileModal = new bootstrap.Modal(document.getElementById('fileModal'));
+            
+            // Set the source of the iframe to the file path
+            fileViewer.src = filePath;
+            
+            // Open the modal
+            fileModal.show();
+        }
+
+        // Event handler for "Register New Complaint" button click
+        function handleRegisterButtonClick() {
+            window.location.href = 'test_3.html'; // Redirect to test_3.html
+        }
+    </script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Include Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

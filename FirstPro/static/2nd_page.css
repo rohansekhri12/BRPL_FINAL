@@ -1,0 +1,52 @@
+/* Add the CSS styles here */
+/* Style the header container */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0; /* Add a background color for better visualization */
+}
+
+/* Style the logo */
+.header img {
+  max-height: 50px; /* Adjust the logo size as needed */
+}
+
+/* Style the Emp Name input */
+.header-content input {
+  flex: 1; /* Allow the input to expand and fill available space */
+  margin: 0 10px; /* Add margin for spacing */
+}
+
+/* Style the Register New Complaint button */
+.header-content #button2 {
+  margin-left: 10px; /* Add margin to separate it from the input */
+  background-color: red; /* Change the button color to red */
+  color: white; /* Change the button text color to white */
+  padding: 5px 10px; /* Add padding for better button appearance */
+  text-decoration: none; /* Remove underlines from the button text */
+}
+
+/* Center the input and button vertically within the header */
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+/* Add spacing between table columns */
+.table th,
+.table td {
+  padding: 10px; /* Adjust the padding as needed for spacing */
+  text-align: center; /* Center align content within table cells */
+}
+
+/* Style the table header row */
+.table thead {
+  background-color: #f0f0f0; /* Add a background color for better visualization */
+}
+
+/* Style the table rows with alternating background colors */
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Add an alternate background color */
+}
